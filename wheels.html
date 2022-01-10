@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script> -->
+  <link rel="stylesheet" href="reset.css">
+  <script src="https://unpkg.com/ag-grid-enterprise/dist/ag-grid-enterprise.min.noStyle.js"></script>
+  <script type="text/javascript" src="all-tires.json"></script>
+  <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
+  <link rel="stylesheet" href="https://unpkg.com/ag-grid-community@26.2.0/dist/styles/ag-theme-balham-dark.min.css">
+</head>
+<body>
+  <div id="myGrid" class="ag-theme-balham-dark" style="position: absolute; height: 100%; width:100%;"></div>
+
+  <script type="text/javascript" charset="utf-8">
+
+    // specify the columns
+    const columnDefs = [
+      { field: "year", sortable: true, filter: true,  enableRowGroup: true},
+      { field: "make" , sortable: true, filter: "agTextColumnFilter", enableRowGroup: true},
+      { field: "model" , sortable: true, filter: true, enableRowGroup: true},
+      { headerName: "Size", field: "size" , sortable: true, filter: "agTextColumnFilter" },
+      { headerName: "Offset", field: "wheel_offset" , sortable: true, filter: "agTextColumnFilter" },
+      { headerName: "PCD", field: "pcd" , sortable: true, filter: "agTextColumnFilter" },
+    ];
+
+    const autoGroupColumnDef = {
+    headerName: "Model",
+    field: "model",
+    cellRenderer:'agGroupCellRenderer',
+    cellRendererParams: {
+        checkbox: true
+    }
+}
+
+
+    // specify the data
+    const rowData = big_wheel_data
+
+    // let the grid know which columns and what data to use
+    const gridOptions = {
+      columnDefs: columnDefs,
+      rowData: rowData,
+      autoGroupColumnDef: autoGroupColumnDef,
+      groupSelectsChildren: true,
+      rowSelection: 'multiple',
+      animateRows: true,
+      enterMovesDownAfterEdit: true,
+      enterMovesDown: true,
+      defaultColDef: {
+        minWidth: 50,
+        sortable: true,
+        filter: true,
+        floatingFilter: true,
+        resizable: true
+    },
+    enableCellChangeFlash: true,
+    rowDragManaged: true,
+    // suppressMoveWhenRowDragging: true,
+    rowDragMultiRow: true,
+
+    enableRangeSelection: true,
+    // enableRangeHandle: true,
+    enableFillHandle: true,
+    undoRedoCellEditing: true,
+    undoRedoCellEditingLimit: 50,
+
+      sideBar: {
+        toolPanels: [
+            {
+                id: 'columns',
+                labelDefault: 'Columns',
+                labelKey: 'columns',
+                iconKey: 'columns',
+                toolPanel: 'agColumnsToolPanel',
+                toolPanelParams: {
+                    syncLayoutWithGrid: true
+                }
+            },
+            {
+                id: 'filters',
+                labelDefault: 'Filters',
+                labelKey: 'filters',
+                iconKey: 'filter',
+                toolPanel: 'agFiltersToolPanel',
+                toolPanelParams: {
+                    syncLayoutWithGrid: true
+                }
+            }
+        ],
+        position: 'right',
+        defaultToolPanel: 'columns',
+        hiddenByDefault: false
+    },
+    };
+
+  // lookup the container we want the Grid to use
+  const eGridDiv = document.querySelector('#myGrid');
+
+  // create the grid passing in the div to use together with the columns & data we want to use
+  new agGrid.Grid(eGridDiv, gridOptions);
+
+  </script>
+</body>
+</html>
